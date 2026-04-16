@@ -84,7 +84,7 @@ val destinosExemplo = listOf(
             "https://images.unsplash.com/photo-1566988148642-343730e135bf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "https://images.unsplash.com/photo-1655987271109-1fb3c1c6d71d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ),
-        videoUrl = "android.resource://com.example.worlsnap/raw/algarve.mp4"
+        videoUrl = "android.resource://com.example.worlsnap/raw/algarve"
     ),
 
     Destino(
@@ -101,7 +101,7 @@ val destinosExemplo = listOf(
             "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?q=80&w=1120&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "https://images.unsplash.com/photo-1550340499-a6c60fc8287c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ),
-        videoUrl = "android.resource://com.example.worlsnap/raw/paris.mp4"
+        videoUrl = "android.resource://com.example.worlsnap/raw/paris"
     ),
 
     Destino(
@@ -118,7 +118,7 @@ val destinosExemplo = listOf(
             "https://images.unsplash.com/photo-1529154036614-a60975f5c760?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1096&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ),
-        videoUrl = "android.resource://com.example.worlsnap/raw/rome.mp4"
+        videoUrl = "android.resource://com.example.worlsnap/raw/rome"
     )
 
 )
