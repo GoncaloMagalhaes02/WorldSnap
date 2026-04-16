@@ -34,7 +34,7 @@ val destinosExemplo = listOf(
             "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1512100526747-ee4b1e5b870a?auto=format&fit=crop&w=800&q=80"
         ),
-        videoUrl = "https://cdn.pixabay.com/video/2020/06/21/42835-432728729_large.mp4"
+        videoUrl = "android.resource://com.example.worlsnap/raw/maldivas"
     ),
 
     Destino(
@@ -51,7 +51,7 @@ val destinosExemplo = listOf(
             "https://images.unsplash.com/photo-1613395877344-13d4a8480f4e?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1602088113235-229c19758e9f?auto=format&fit=crop&w=800&q=80"
         ),
-        videoUrl = "https://cdn.pixabay.com/video/2022/08/16/128143-739956329_large.mp4"
+        videoUrl = "android.resource://com.example.worlsnap/raw/santorini"
     ),
 
     Destino(
@@ -68,6 +68,6 @@ val destinosExemplo = listOf(
             "https://images.unsplash.com/photo-1503899036084-4215592be29f?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80"
         ),
-        videoUrl = "https://cdn.pixabay.com/video/2019/09/04/26654-358296538_large.mp4"
+        videoUrl = "android.resource://com.example.worlsnap/raw/toquio"
     )
 )

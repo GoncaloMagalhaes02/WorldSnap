@@ -49,11 +49,11 @@ class SensorHelper(context: Context) : SensorEventListener {
                     when {
                         rotZ > ROTATE_THRESHOLD -> {
                             lastRotateTime = now
-                            onRotateRight?.invoke()
+                            onRotateLeft?.invoke()
                         }
                         rotZ < -ROTATE_THRESHOLD -> {
                             lastRotateTime = now
-                            onRotateLeft?.invoke()
+                            onRotateRight?.invoke()
                         }
                     }
                 }
