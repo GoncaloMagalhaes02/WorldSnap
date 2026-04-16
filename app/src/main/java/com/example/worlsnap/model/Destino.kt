@@ -69,5 +69,56 @@ val destinosExemplo = listOf(
             "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80"
         ),
         videoUrl = "android.resource://com.example.worlsnap/raw/toquio"
+    ),
+    Destino(
+        id = "algarve",
+        nome = "Algarve",
+        pais = "Portugal, Europa",
+        categoria = Categoria.PRAIAS,
+        descricao = "A região mais a sul de Portugal, famosa pelas praias douradas, falésias de calcário e águas azuis. Um dos destinos turísticos mais premiados da Europa.",
+        curiosidades = "O Algarve tem mais de 300 dias de sol por ano, tornando-o um dos destinos mais ensolarados da Europa. " +
+                "A Praia da Marinha foi considerada uma das dez praias mais bonitas da Europa. " +
+                "A região é famosa pelas cataplanas de marisco, um prato típico cozinhado numa panela de cobre em forma de amêijoa.",
+        fotos = listOf(
+            "https://plus.unsplash.com/premium_photo-1661957387235-3bc814072fb3?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://images.unsplash.com/photo-1566988148642-343730e135bf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://images.unsplash.com/photo-1655987271109-1fb3c1c6d71d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        ),
+        videoUrl = "android.resource://com.example.worlsnap/raw/algarve.mp4"
+    ),
+
+    Destino(
+        id = "paris",
+        nome = "Paris",
+        pais = "França, Europa",
+        categoria = Categoria.CIDADES,
+        descricao = "A capital francesa, conhecida como a Cidade Luz. Famosa pela Torre Eiffel, pelo Museu do Louvre e pela sua arquitetura romântica às margens do Rio Sena.",
+        curiosidades = "Paris recebe cerca de 30 milhões de turistas por ano, tornando-a a cidade mais visitada do mundo. " +
+                "A Torre Eiffel foi construída em 1889 para a Exposição Universal e era para ser demolida 20 anos depois. " +
+                "O Museu do Louvre é o maior museu de arte do mundo, com mais de 35 mil obras expostas, incluindo a Mona Lisa.",
+        fotos = listOf(
+            "https://plus.unsplash.com/premium_photo-1661919210043-fd847a58522d?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?q=80&w=1120&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://images.unsplash.com/photo-1550340499-a6c60fc8287c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        ),
+        videoUrl = "android.resource://com.example.worlsnap/raw/paris.mp4"
+    ),
+
+    Destino(
+        id = "roma",
+        nome = "Roma",
+        pais = "Itália, Europa",
+        categoria = Categoria.GASTRONOMIA,
+        descricao = "A capital italiana e berço da gastronomia mediterrânica. De la pasta ao gelato, Roma oferece uma experiência culinária única com mais de 2000 anos de história.",
+        curiosidades = "Roma tem mais de 900 igrejas e é a cidade com maior concentração de património histórico do mundo. " +
+                "A pasta alla carbonara é originária de Roma e na receita tradicional não leva natas — apenas ovos, queijo pecorino, guanciale e pimenta preta. " +
+                "O gelato italiano tem menos gordura e ar do que o gelado americano, o que lhe dá uma textura mais densa e sabor mais intenso.",
+        fotos = listOf(
+            "https://images.unsplash.com/photo-1531572753322-ad063cecc140?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://images.unsplash.com/photo-1529154036614-a60975f5c760?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1096&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        ),
+        videoUrl = "android.resource://com.example.worlsnap/raw/rome.mp4"
     )
+
 )
