@@ -30,9 +30,9 @@ val destinosExemplo = listOf(
                 "O arquipélago é composto por 26 atóis e mais de 1000 ilhas de coral, das quais apenas cerca de 200 são habitadas. " +
                 "As suas águas são lar de mais de mil espécies de peixes, incluindo tubarões-baleia e raias-manta, tornando-as um dos melhores destinos do mundo para mergulho.",
         fotos = listOf(
-            "https://images.unsplash.com/photo-1514282401047-0e3c9c2f1cba?auto=format&fit=crop&w=800&q=80",
+            "https://plus.unsplash.com/premium_photo-1666432045848-3fdbb2c74531?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1512100526747-ee4b1e5b870a?auto=format&fit=crop&w=800&q=80"
+            "https://images.unsplash.com/photo-1586495985096-787fb4a54ac0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ),
         videoUrl = "android.resource://com.example.worlsnap/raw/maldivas"
     ),
@@ -47,9 +47,9 @@ val destinosExemplo = listOf(
                 "As famosas casas brancas e cúpulas azuis que caracterizam a ilha não são apenas estéticas — o branco reflete o calor do sol e o azul das cúpulas representa a bandeira grega. " +
                 "A ilha produz o vinho Assyrtiko, cultivado em videiras enroladas em forma de cesto rente ao chão, protegidas do vento forte que varre a ilha.",
         fotos = listOf(
-            "https://images.unsplash.com/photo-1570077681-a0c516de7e8b?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1613395877344-13d4a8480f4e?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1602088113235-229c19758e9f?auto=format&fit=crop&w=800&q=80"
+            "https://plus.unsplash.com/premium_photo-1661964149725-fbf14eabd38c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://plus.unsplash.com/premium_photo-1661963145672-a2bd28eba0fb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ),
         videoUrl = "android.resource://com.example.worlsnap/raw/santorini"
     ),
@@ -65,7 +65,7 @@ val destinosExemplo = listOf(
                 "O ramen tem mais de 30 variações regionais no Japão, e Tóquio tem museus inteiros dedicados exclusivamente a este prato.",
         fotos = listOf(
             "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1503899036084-4215592be29f?auto=format&fit=crop&w=800&q=80",
+            "https://plus.unsplash.com/premium_photo-1661914240950-b0124f20a5c1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80"
         ),
         videoUrl = "android.resource://com.example.worlsnap/raw/toquio"
