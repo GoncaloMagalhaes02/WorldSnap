@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,6 +25,7 @@ import coil.compose.AsyncImage
 import com.example.worlsnap.model.Categoria
 import com.example.worlsnap.model.Destino
 import com.example.worlsnap.model.destinosExemplo
+import com.example.worlsnap.sensors.SensorHelper
 import com.example.worlsnap.ui.theme.DarkNavy
 import com.example.worlsnap.ui.theme.LightGray
 import com.example.worlsnap.ui.theme.PrimaryBlue
@@ -38,11 +40,42 @@ private val categoriasFiltro = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(onDestinoClick: (String) -> Unit) {
+    val context = LocalContext.current
+
     var indexCategoria by remember { mutableStateOf(0) }
     var pesquisa by remember { mutableStateOf("") }
     val favoritos = remember { mutableStateListOf<String>() }
+    var gestoAtivo by remember { mutableStateOf("") }
 
     val categoriaAtiva = categoriasFiltro[indexCategoria]
+
+    // ── Sensores ─────────────────────────────────────────────────
+    val sensorHelper = remember { SensorHelper(context) }
+
+    DisposableEffect(Unit) {
+        sensorHelper.onRotateRight = {
+            if (indexCategoria < categoriasFiltro.lastIndex) {
+                indexCategoria++
+                gestoAtivo = "Categoria: ${categoriasFiltro[indexCategoria].label}"
+            }
+        }
+        sensorHelper.onRotateLeft = {
+            if (indexCategoria > 0) {
+                indexCategoria--
+                gestoAtivo = "Categoria: ${categoriasFiltro[indexCategoria].label}"
+            }
+        }
+        sensorHelper.register()
+        onDispose { sensorHelper.unregister() }
+    }
+
+    // Limpa o feedback do gesto após 1s
+    LaunchedEffect(gestoAtivo) {
+        if (gestoAtivo.isNotEmpty()) {
+            kotlinx.coroutines.delay(1000)
+            gestoAtivo = ""
+        }
+    }
 
     val destinosFiltrados = destinosExemplo.filter { destino ->
         val matchCategoria = categoriaAtiva == Categoria.TODOS || destino.categoria == categoriaAtiva
@@ -61,16 +94,17 @@ fun HomeScreen(onDestinoClick: (String) -> Unit) {
                 .background(DarkNavy)
                 .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
-            Text(
-                text = "WorldSnap",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
+            Text(text = "WorldSnap", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
             Text(
                 text = "Descobre o mundo",
                 fontSize = 13.sp,
                 color = Color.White.copy(alpha = 0.6f),
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = "Roda o telemóvel para mudar categoria",
+                fontSize = 11.sp,
+                color = Color.White.copy(alpha = 0.4f),
                 modifier = Modifier.padding(bottom = 12.dp)
             )
             TextField(
@@ -96,40 +130,84 @@ fun HomeScreen(onDestinoClick: (String) -> Unit) {
             )
         }
 
-        // ── Filtros ──────────────────────────────────────────────
-        LazyRow(
+        // ── Filtros + feedback do gesto ──────────────────────────
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(LightGray)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(categoriasFiltro) { categoria ->
-                val isActive = categoriaAtiva == categoria
-                FilterChip(
-                    selected = isActive,
-                    onClick = { indexCategoria = categoriasFiltro.indexOf(categoria) },
-                    label = {
-                        Text(
-                            text = categoria.label,
-                            fontSize = 12.sp,
-                            fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal
-                        )
-                    },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = PrimaryBlue,
-                        selectedLabelColor = Color.White,
-                        containerColor = Color.White,
-                        labelColor = Color.Gray
-                    ),
-                    border = FilterChipDefaults.filterChipBorder(
-                        enabled = true,
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(categoriasFiltro) { categoria ->
+                    val isActive = categoriaAtiva == categoria
+                    FilterChip(
                         selected = isActive,
-                        borderColor = Color(0xFFDDDDDD),
-                        selectedBorderColor = PrimaryBlue
+                        onClick = { indexCategoria = categoriasFiltro.indexOf(categoria) },
+                        label = {
+                            Text(
+                                text = categoria.label,
+                                fontSize = 12.sp,
+                                fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal
+                            )
+                        },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = PrimaryBlue,
+                            selectedLabelColor = Color.White,
+                            containerColor = Color.White,
+                            labelColor = Color.Gray
+                        ),
+                        border = FilterChipDefaults.filterChipBorder(
+                            enabled = true,
+                            selected = isActive,
+                            borderColor = Color(0xFFDDDDDD),
+                            selectedBorderColor = PrimaryBlue
+                        )
                     )
-                )
+                }
             }
+
+            // Feedback visual do gesto
+            if (gestoAtivo.isNotEmpty()) {
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 12.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    color = PrimaryBlue
+                ) {
+                    Text(
+                        text = gestoAtivo,
+                        color = Color.White,
+                        fontSize = 11.sp,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                    )
+                }
+            }
+        }
+
+        // ── Setas de navegação visual ────────────────────────────
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(LightGray)
+                .padding(horizontal = 16.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = if (indexCategoria > 0) "‹ ${categoriasFiltro[indexCategoria - 1].label}" else "",
+                fontSize = 12.sp,
+                color = Color(0xFF888888)
+            )
+            Text(
+                text = if (indexCategoria < categoriasFiltro.lastIndex) "${categoriasFiltro[indexCategoria + 1].label} ›" else "",
+                fontSize = 12.sp,
+                color = Color(0xFF888888)
+            )
         }
 
         // ── Lista de destinos ────────────────────────────────────
