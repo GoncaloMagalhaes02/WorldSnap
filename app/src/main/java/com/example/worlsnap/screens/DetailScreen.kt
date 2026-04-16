@@ -3,6 +3,8 @@ package com.example.worlsnap.screens
 
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -28,6 +30,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import coil.compose.AsyncImage
 import com.example.worlsnap.model.destinosExemplo
+import com.example.worlsnap.sensors.SensorHelper
 import com.example.worlsnap.ui.theme.ColorAmber
 import com.example.worlsnap.ui.theme.ColorGreen
 import com.example.worlsnap.ui.theme.DarkNavy
@@ -35,6 +38,7 @@ import com.example.worlsnap.ui.theme.LightBlue
 import com.example.worlsnap.ui.theme.LightGray
 import com.example.worlsnap.ui.theme.PrimaryBlue
 import java.util.Locale
+
 
 enum class AudioEstado { PARADO, A_TOCAR, PAUSADO }
 
@@ -48,6 +52,7 @@ fun DetailScreen(
 
     var fotoAtual by remember { mutableStateOf(0) }
     var audioEstado by remember { mutableStateOf(AudioEstado.PARADO) }
+    var gestoAtivo by remember { mutableStateOf("") }
 
     // ── ExoPlayer ────────────────────────────────────────────────
     val exoPlayer = remember {
@@ -94,6 +99,45 @@ fun DetailScreen(
                 engine.stop()
                 audioEstado = AudioEstado.PAUSADO
             }
+        }
+    }
+
+    fun toggleVideo() {
+        if (exoPlayer.isPlaying) exoPlayer.pause() else exoPlayer.play()
+    }
+
+    // ── Sensores ─────────────────────────────────────────────────
+    val sensorHelper = remember { SensorHelper(context) }
+
+    DisposableEffect(Unit) {
+        sensorHelper.onRotateRight = {
+            if (fotoAtual < destino.fotos.lastIndex) {
+                fotoAtual++
+                gestoAtivo = "Próxima foto (${fotoAtual + 1}/${destino.fotos.size})"
+            }
+        }
+        sensorHelper.onRotateLeft = {
+            if (fotoAtual > 0) {
+                fotoAtual--
+                gestoAtivo = "Foto anterior (${fotoAtual + 1}/${destino.fotos.size})"
+            }
+        }
+        sensorHelper.onShake = {
+            toggleVideo()
+            gestoAtivo = if (exoPlayer.isPlaying) "Vídeo pausado" else "Vídeo a tocar"
+        }
+        sensorHelper.onProximity = {
+            toggleAudio()
+        }
+        sensorHelper.register()
+        onDispose { sensorHelper.unregister() }
+    }
+
+    // Limpa feedback do gesto após 1.2s
+    LaunchedEffect(gestoAtivo) {
+        if (gestoAtivo.isNotEmpty()) {
+            kotlinx.coroutines.delay(1200)
+            gestoAtivo = ""
         }
     }
 
@@ -150,6 +194,28 @@ fun DetailScreen(
                     contentScale = ContentScale.Crop
                 )
 
+                // Feedback visual do gesto
+                if (gestoAtivo.isNotEmpty()) {
+                    val bgColor by animateColorAsState(
+                        targetValue = PrimaryBlue.copy(alpha = 0.85f),
+                        animationSpec = tween(200),
+                        label = "gestoColor"
+                    )
+                    Surface(
+                        modifier = Modifier.align(Alignment.Center),
+                        shape = RoundedCornerShape(20.dp),
+                        color = bgColor
+                    ) {
+                        Text(
+                            text = gestoAtivo,
+                            color = Color.White,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
+                }
+
                 // Seta esquerda
                 if (fotoAtual > 0) {
                     Surface(
@@ -172,6 +238,20 @@ fun DetailScreen(
                         Text("›", color = Color.White, fontSize = 22.sp,
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp))
                     }
+                }
+
+                // Dica de sensor
+                Surface(
+                    modifier = Modifier.align(Alignment.BottomEnd).padding(8.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    color = Color.Black.copy(alpha = 0.55f)
+                ) {
+                    Text(
+                        text = "Roda para mudar foto",
+                        color = Color.White,
+                        fontSize = 10.sp,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
                 }
 
                 // Dots indicadores
@@ -222,15 +302,29 @@ fun DetailScreen(
                         colors = CardDefaults.cardColors(containerColor = DarkNavy),
                         elevation = CardDefaults.cardElevation(1.dp)
                     ) {
-                        AndroidView(
-                            factory = { ctx ->
-                                PlayerView(ctx).apply {
-                                    player = exoPlayer
-                                    useController = true
-                                }
-                            },
-                            modifier = Modifier.fillMaxSize()
-                        )
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            AndroidView(
+                                factory = { ctx ->
+                                    PlayerView(ctx).apply {
+                                        player = exoPlayer
+                                        useController = true
+                                    }
+                                },
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            Surface(
+                                modifier = Modifier.align(Alignment.BottomCenter).padding(4.dp),
+                                shape = RoundedCornerShape(6.dp),
+                                color = Color.Black.copy(alpha = 0.6f)
+                            ) {
+                                Text(
+                                    text = "~ agitar = play/pause",
+                                    color = Color.White,
+                                    fontSize = 9.sp,
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                )
+                            }
+                        }
                     }
 
                     // Áudio TTS
@@ -275,15 +369,42 @@ fun DetailScreen(
                                 )
                             }
                             Text(
-                                text = when (audioEstado) {
-                                    AudioEstado.PARADO  -> "narração em português"
-                                    AudioEstado.A_TOCAR -> "a reproduzir..."
-                                    AudioEstado.PAUSADO -> "pausado"
-                                },
-                                fontSize = 10.sp,
+                                text = "ou aproxima ao ouvido",
+                                fontSize = 9.sp,
                                 color = Color.LightGray,
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // ── Resumo dos sensores ──────────────────────────
+                Text(text = "Sensores ativos", fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                    color = Color.Gray, modifier = Modifier.padding(bottom = 6.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    listOf(
+                        Triple("Giroscópio",         "Rodar direita / esquerda", "Mudar foto"),
+                        Triple("Acelerómetro",       "Agitar o telemóvel",       "Play / pause vídeo"),
+                        Triple("Sensor proximidade", "Aproximar ao ouvido",      "Play / pause áudio")
+                    ).forEach { (sensor, gesto, acao) ->
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(8.dp),
+                            colors = CardDefaults.cardColors(containerColor = LightBlue),
+                            elevation = CardDefaults.cardElevation(0.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = sensor, fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF0C447C))
+                                    Text(text = gesto, fontSize = 10.sp, color = Color(0xFF185FA5))
+                                }
+                                Text(text = acao, fontSize = 11.sp, fontWeight = FontWeight.Medium, color = PrimaryBlue)
+                            }
                         }
                     }
                 }
