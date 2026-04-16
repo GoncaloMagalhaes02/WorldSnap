@@ -1,6 +1,5 @@
 package com.example.worlsnap.screens
 
-
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import androidx.compose.animation.animateColorAsState
@@ -39,7 +38,6 @@ import com.example.worlsnap.ui.theme.LightGray
 import com.example.worlsnap.ui.theme.PrimaryBlue
 import java.util.Locale
 
-
 enum class AudioEstado { PARADO, A_TOCAR, PAUSADO }
 
 @Composable
@@ -50,7 +48,9 @@ fun DetailScreen(
     val context = LocalContext.current
     val destino = destinosExemplo.find { it.id == destinoId } ?: return
 
-    var fotoAtual by remember { mutableStateOf(0) }
+    // ── Estado ───────────────────────────────────────────────────
+    val fotoAtualState = remember { mutableStateOf(0) }
+    var fotoAtual by fotoAtualState
     var audioEstado by remember { mutableStateOf(AudioEstado.PARADO) }
     var gestoAtivo by remember { mutableStateOf("") }
 
@@ -83,6 +83,7 @@ fun DetailScreen(
         }
     }
 
+    // ── Funções de controlo (declaradas antes dos sensores) ───────
     fun toggleAudio() {
         val engine = tts ?: return
         when (audioEstado) {
@@ -111,15 +112,15 @@ fun DetailScreen(
 
     DisposableEffect(Unit) {
         sensorHelper.onRotateRight = {
-            if (fotoAtual < destino.fotos.lastIndex) {
-                fotoAtual++
-                gestoAtivo = "Próxima foto (${fotoAtual + 1}/${destino.fotos.size})"
+            if (fotoAtualState.value < destino.fotos.lastIndex) {
+                fotoAtualState.value++
+                gestoAtivo = "Próxima foto (${fotoAtualState.value + 1}/${destino.fotos.size})"
             }
         }
         sensorHelper.onRotateLeft = {
-            if (fotoAtual > 0) {
-                fotoAtual--
-                gestoAtivo = "Foto anterior (${fotoAtual + 1}/${destino.fotos.size})"
+            if (fotoAtualState.value > 0) {
+                fotoAtualState.value--
+                gestoAtivo = "Foto anterior (${fotoAtualState.value + 1}/${destino.fotos.size})"
             }
         }
         sensorHelper.onShake = {

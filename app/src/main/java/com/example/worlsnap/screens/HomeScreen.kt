@@ -42,7 +42,10 @@ private val categoriasFiltro = listOf(
 fun HomeScreen(onDestinoClick: (String) -> Unit) {
     val context = LocalContext.current
 
-    var indexCategoria by remember { mutableStateOf(0) }
+    // ── fix closure: usar o State diretamente nos callbacks ───────
+    val indexCategoriaState = remember { mutableStateOf(0) }
+    var indexCategoria by indexCategoriaState
+
     var pesquisa by remember { mutableStateOf("") }
     val favoritos = remember { mutableStateListOf<String>() }
     var gestoAtivo by remember { mutableStateOf("") }
@@ -54,15 +57,15 @@ fun HomeScreen(onDestinoClick: (String) -> Unit) {
 
     DisposableEffect(Unit) {
         sensorHelper.onRotateRight = {
-            if (indexCategoria < categoriasFiltro.lastIndex) {
-                indexCategoria++
-                gestoAtivo = "Categoria: ${categoriasFiltro[indexCategoria].label}"
+            if (indexCategoriaState.value < categoriasFiltro.lastIndex) {
+                indexCategoriaState.value++
+                gestoAtivo = "Categoria: ${categoriasFiltro[indexCategoriaState.value].label}"
             }
         }
         sensorHelper.onRotateLeft = {
-            if (indexCategoria > 0) {
-                indexCategoria--
-                gestoAtivo = "Categoria: ${categoriasFiltro[indexCategoria].label}"
+            if (indexCategoriaState.value > 0) {
+                indexCategoriaState.value--
+                gestoAtivo = "Categoria: ${categoriasFiltro[indexCategoriaState.value].label}"
             }
         }
         sensorHelper.register()
@@ -270,7 +273,8 @@ fun DestinoCard(
                     .padding(horizontal = 12.dp, vertical = 10.dp)
             ) {
                 Text(text = destino.nome, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1A1A2E))
-                Text(text = destino.pais, fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(top = 2.dp, bottom = 6.dp))
+                Text(text = destino.pais, fontSize = 12.sp, color = Color.Gray,
+                    modifier = Modifier.padding(top = 2.dp, bottom = 6.dp))
                 Surface(
                     shape = RoundedCornerShape(20.dp),
                     color = categoriaColor(destino.categoria).copy(alpha = 0.15f)

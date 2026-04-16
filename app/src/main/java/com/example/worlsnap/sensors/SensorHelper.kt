@@ -44,14 +44,14 @@ class SensorHelper(context: Context) : SensorEventListener {
             // Eixo Y: valor positivo = rodar para a direita
             //         valor negativo = rodar para a esquerda
             Sensor.TYPE_GYROSCOPE -> {
-                val rotY = event.values[1]
+                val rotZ = event.values[2]  // eixo Z = inclinar esquerda/direita
                 if (now - lastRotateTime > COOLDOWN_MS) {
                     when {
-                        rotY > ROTATE_THRESHOLD -> {
+                        rotZ > ROTATE_THRESHOLD -> {
                             lastRotateTime = now
                             onRotateRight?.invoke()
                         }
-                        rotY < -ROTATE_THRESHOLD -> {
+                        rotZ < -ROTATE_THRESHOLD -> {
                             lastRotateTime = now
                             onRotateLeft?.invoke()
                         }
